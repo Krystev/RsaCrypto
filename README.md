@@ -1,5 +1,32 @@
 [![](https://jitpack.io/v/krystev/rsacrypto.svg)](https://jitpack.io/#krystev/rsacrypto)
 
+# What is RsaCrypto
+
+Android library for RSA Encryption and Decryption
+
+You can use only **RSA** algorithm
+
+with two modes:
+**NONE** and **ECB**
+
+It supports the following paddings:
+
+- NoPadding
+- OAEPPadding
+- PKCS1Padding
+- OAEPwithSHA256andMGF1Padding
+- OAEPwithSHA224andMGF1Padding
+- OAEPwithSHA384andMGF1Padding
+- OAEPwithSHA512andMGF1Padding
+- OAEPWithSHA1AndMGF1Padding
+
+You can select different key length bits:
+
+- 512
+- 1024
+- 2048
+- 4096
+
 # How to get a Git project into your build:
 
 Step 1. Add the JitPack repository to your build file
