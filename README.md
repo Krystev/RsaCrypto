@@ -11,21 +11,21 @@ with two modes:
 
 It supports the following paddings:
 
-- NoPadding
-- OAEPPadding
-- PKCS1Padding
-- OAEPwithSHA256andMGF1Padding
-- OAEPwithSHA224andMGF1Padding
-- OAEPwithSHA384andMGF1Padding
-- OAEPwithSHA512andMGF1Padding
-- OAEPWithSHA1AndMGF1Padding
+- **NoPadding**
+- **OAEPPadding**
+- **PKCS1Padding**
+- **OAEPwithSHA256andMGF1Padding**
+- **OAEPwithSHA224andMGF1Padding**
+- **OAEPwithSHA384andMGF1Padding**
+- **OAEPwithSHA512andMGF1Padding**
+- **OAEPWithSHA1AndMGF1Padding**
 
 You can select different key length bits:
 
-- 512
-- 1024
-- 2048
-- 4096
+- **512**
+- **1024**
+- **2048**
+- **4096**
 
 # How to get a Git project into your build:
 
