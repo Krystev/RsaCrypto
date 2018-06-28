@@ -11,29 +11,29 @@ with two modes:
 
 It supports the following paddings:
 
-- NoPadding
-- OAEPPadding
-- PKCS1Padding
-- OAEPwithSHA256andMGF1Padding
-- OAEPwithSHA224andMGF1Padding
-- OAEPwithSHA384andMGF1Padding
-- OAEPwithSHA512andMGF1Padding
-- OAEPWithSHA1AndMGF1Padding
+- **NoPadding**
+- **OAEPPadding**
+- **PKCS1Padding**
+- **OAEPwithSHA256andMGF1Padding**
+- **OAEPwithSHA224andMGF1Padding**
+- **OAEPwithSHA384andMGF1Padding**
+- **OAEPwithSHA512andMGF1Padding**
+- **OAEPWithSHA1AndMGF1Padding**
 
 You can select different key length bits:
 
-- 512
-- 1024
-- 2048
-- 4096
+- **512**
+- **1024**
+- **2048**
+- **4096**
 
 # How to get a Git project into your build:
 
-Step 1. Add the JitPack repository to your build file
+**Step 1.** Add the JitPack repository to your build file
 
 ### Gradle:
 
-Step 1. Add it in your root build.gradle at the end of repositories:
+**Step 1.** Add it in your root build.gradle at the end of repositories:
 
 	allprojects {
 		repositories {
@@ -41,7 +41,7 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 			maven { url 'https://jitpack.io' }
 		}
 	}
-Step 2. Add the dependency
+**Step 2.** Add the dependency
 
 	dependencies {
 	        implementation 'com.github.krystev:rsacrypto:v1.0'
@@ -49,7 +49,7 @@ Step 2. Add the dependency
 
 ### Maven:
 
-Step 1. Add the JitPack repository to your build file
+**Step 1.** Add the JitPack repository to your build file
 
 	<repositories>
 		<repository>
@@ -58,7 +58,7 @@ Step 1. Add the JitPack repository to your build file
 		</repository>
 	</repositories>
 	
-Step 2. Add the dependency
+**Step 2.** Add the dependency
 
 	<dependency>
 	    <groupId>com.github.krystev</groupId>
@@ -89,11 +89,11 @@ or
 	String encryptedData = rsaCipher.encryptByPrivateKey(data);
 	
 ## Decrypt data
-Decrypt data with private key if you have been encrypted it with public key before:
+Decrypt data with private key **if you have been encrypted it with public key before**:
 	
 	String decryptedData = rsaCipher.decryptByPrivateKey(data);
 	
-or decrypt it with public key if you have been encrypted it with private key:
+or decrypt it with public key **if you have been encrypted it with private key**:
 
 	String decryptedData = rsaCipher.decryptByPublicKey(data);
 
