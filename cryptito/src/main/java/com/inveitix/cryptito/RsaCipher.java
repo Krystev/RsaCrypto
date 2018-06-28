@@ -43,6 +43,7 @@ public class RsaCipher
     private Cipher mEncryptCipher, decryptCipher;
     private String mEncryptedData, mDecryptedData;
     private KeyFactory mKeyFactory;
+    private String mKeyStoreAlias;
 
     /**
      * Initializes a new {@code RsaCipher} object for encryption and decryption. See
@@ -52,6 +53,7 @@ public class RsaCipher
      */
     public RsaCipher(RsaContext context, String keyStoreAlias)
     {
+        mKeyStoreAlias = keyStoreAlias;
         if (context == null ||
                 context.getAlgorithm() == null ||
                 context.getMode() == null ||
@@ -107,12 +109,53 @@ public class RsaCipher
             KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm.toString(), ANDROID_KEY_STORE);
             generator.initialize(spec);
             KeyPair keyPair = generator.generateKeyPair();
-            mPublicKey = keyPair.getPublic();
-            mPrivateKey = keyPair.getPrivate();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private KeyStore.Entry getKeyEntry(String keyStoreAlias)
+    {
+        generateKeyPair(mContext.getAlgorithm(), mContext.getKeyLength(), keyStoreAlias);
+        KeyStore mKeyStore;
+        try {
+            mKeyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
+            mKeyStore.load(null);
+            return mKeyStore.getEntry(keyStoreAlias, null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public PublicKey getPublicKey()
+    {
+        if (mPublicKey == null) {
+            KeyStore.Entry privateKeyEntry = getKeyEntry(mKeyStoreAlias);
+            if (!(privateKeyEntry instanceof KeyStore.PrivateKeyEntry)) {
+
+                return null;
+            }
+            mPublicKey = ((KeyStore.PrivateKeyEntry) privateKeyEntry).getCertificate().getPublicKey();
+        }
+
+        return mPublicKey;
+    }
+
+    public PrivateKey getPrivateKey()
+    {
+        if (mPrivateKey == null) {
+            KeyStore.Entry privateKeyEntry = getKeyEntry(mKeyStoreAlias);
+            if (!(privateKeyEntry instanceof KeyStore.PrivateKeyEntry)) {
+
+                return null;
+            }
+
+            mPrivateKey = ((KeyStore.PrivateKeyEntry) privateKeyEntry).getPrivateKey();
+        }
+        return mPrivateKey;
     }
 
     /**
@@ -145,7 +188,7 @@ public class RsaCipher
     {
         ByteArrayOutputStream outputStream;
         try {
-            mEncryptCipher.init(Cipher.ENCRYPT_MODE, mPublicKey);
+            mEncryptCipher.init(Cipher.ENCRYPT_MODE, getPublicKey());
 
             outputStream = new ByteArrayOutputStream();
             CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, mEncryptCipher);
@@ -171,7 +214,7 @@ public class RsaCipher
     {
         ByteArrayOutputStream outputStream;
         try {
-            mEncryptCipher.init(Cipher.ENCRYPT_MODE, mPrivateKey);
+            mEncryptCipher.init(Cipher.ENCRYPT_MODE, getPrivateKey());
 
             outputStream = new ByteArrayOutputStream();
             CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, mEncryptCipher);
@@ -199,7 +242,7 @@ public class RsaCipher
 
 
         try {
-            decryptCipher.init(Cipher.DECRYPT_MODE, mPrivateKey);
+            decryptCipher.init(Cipher.DECRYPT_MODE, getPrivateKey());
             CipherInputStream cipherInputStream = new CipherInputStream(
                     new ByteArrayInputStream(encryptedBytes), decryptCipher);
 
@@ -234,7 +277,7 @@ public class RsaCipher
 
 
         try {
-            decryptCipher.init(Cipher.DECRYPT_MODE, mPublicKey);
+            decryptCipher.init(Cipher.DECRYPT_MODE, getPublicKey());
             CipherInputStream cipherInputStream = new CipherInputStream(
                     new ByteArrayInputStream(encryptedBytes), decryptCipher);
 
